@@ -4,7 +4,7 @@ class BooksController < ApplicationController
   # GET /books
   # GET /books.json
   def index
-    @books = Book.all
+    @books = Book.all.order(:row_order)
   end
 
   # GET /books/1
@@ -58,6 +58,18 @@ class BooksController < ApplicationController
     respond_to do |format|
       format.html { redirect_to books_url, notice: 'Book was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  # PATCH /books/row_order(.:format)
+  def row_order
+    ActiveRecord::Base.transaction do
+      params[:row_order].split(',').each_with_index do |id, i|
+        book = Book.find(id)
+        book.row_order = i + 1
+        book.save!(validate: false)
+        # book.save!
+      end
     end
   end
 
