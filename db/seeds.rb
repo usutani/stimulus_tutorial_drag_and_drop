@@ -6,5 +6,6 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 5.times do |i|
-  Book.create!(title: Faker::Book.title, row_order: i)
+  row_order = i + 1
+  Book.create!(title: "#{row_order} #{Faker::Book.title}", row_order: row_order)
 end

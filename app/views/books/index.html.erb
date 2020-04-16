@@ -2,6 +2,22 @@
 
 <h1>Books</h1>
 
+<div class="hidden">
+<%= form_with id: 'row-order-form', method: :patch, url: row_order_books_path do |form| %>
+  <%= form.text_field :row_order %>
+<% end %>
+</div>
+
+<% controller = "drag-item" %>
+<% action = 'ajax:error@document->drag-item#onPostError' %>
+<%= tag.ul data: { controller: controller, action: action } do %>
+  <% @books.each do |book| %>
+    <%= tag.li data: { id: book.id } do %>
+      <%= book.title %>
+    <% end %>
+  <% end %>
+<% end %>
+
 <table>
   <thead>
     <tr>
