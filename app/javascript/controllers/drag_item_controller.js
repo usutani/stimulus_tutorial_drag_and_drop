@@ -49,15 +49,19 @@ export default class extends Controller {
     event.preventDefault()
   }
 
-dragend(event) {
-  const nodes = this.element.querySelectorAll('[data-book-id]')
-  const ids = Array.from(nodes).map(el => el.getAttribute('data-book-id'))
-  const form = document.getElementById('row-order-form')
-  document.getElementById('row_order').value = ids
-  Rails.fire(form, 'submit')
-}
-
-  onPostError(event) {
-    Turbolinks.visit('/books', 'replace')
+  dragend(event) {
+    const nodes = this.element.querySelectorAll('[data-book-id]')
+    const ids = Array.from(nodes).map(el => el.getAttribute('data-book-id'))
+    const payload = new FormData()
+    payload.append('row_order', ids)
+    Rails.ajax({
+      url: '/books/row_order',
+      type: 'PATCH',
+      dataType: 'json',
+      data: payload,
+      error: (_response, _status, xhr) => {
+        Turbolinks.visit('/books', 'replace')
+      },
+    })
   }
 }
