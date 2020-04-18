@@ -64,7 +64,7 @@ class BooksController < ApplicationController
   # PATCH /books/row_order(.:format)
   def row_order
     ActiveRecord::Base.transaction do
-      params[:row_order].split(',').each_with_index do |id, i|
+      params[:row_order].each_with_index do |id, i|
         book = Book.find(id)
         book.row_order = i + 1
         book.save!(validate: false)

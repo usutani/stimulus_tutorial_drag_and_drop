@@ -49,15 +49,27 @@ export default class extends Controller {
     event.preventDefault()
   }
 
-dragend(event) {
-  const nodes = this.element.querySelectorAll('[data-book-id]')
-  const ids = Array.from(nodes).map(el => el.getAttribute('data-book-id'))
-  const form = document.getElementById('row-order-form')
-  document.getElementById('row_order').value = ids
-  Rails.fire(form, 'submit')
-}
-
-  onPostError(event) {
-    Turbolinks.visit('/books', 'replace')
+  dragend(event) {
+    const nodes = this.element.querySelectorAll('[data-book-id]')
+    const ids = Array.from(nodes).map(el => el.getAttribute('data-book-id'))
+    const obj = { row_order: ids }
+    const body = JSON.stringify(obj)
+    const token = document.getElementsByName('csrf-token')[0].content
+    const headers = {
+      'X-CSRF-Token': token,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
+    fetch('/books/row_order', {
+      method: 'PATCH',
+      // credentials: 'same-origin',
+      headers: headers,
+      body: body,
+    })
+    .then(response => {
+      if (!response.ok) {
+        Turbolinks.visit('/books', 'replace')
+      }
+    })
   }
 }

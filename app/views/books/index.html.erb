@@ -2,12 +2,6 @@
 
 <h1>Books</h1>
 
-<div class="hidden">
-<%= form_with id: 'row-order-form', method: :patch, url: row_order_books_path do |form| %>
-  <%= form.text_field :row_order %>
-<% end %>
-</div>
-
 <% controller = "drag-item" %>
 <% actions = %w(dragstart dragover drop dragend) %>
 <% action = propagate_events(controller, actions) %>
