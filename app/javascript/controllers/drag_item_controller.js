@@ -58,6 +58,6 @@ dragend(event) {
 }
 
   onPostError(event) {
-    Turbolinks.visit('/books', 'replace')
+    Turbolinks.visit('/books')
   }
 }
